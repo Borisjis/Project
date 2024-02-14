@@ -1,0 +1,720 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <!-- ... rest of your HTML ... -->
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>WalletWISE</title>
+        <link rel="stylesheet" href="{% static 'styles.css' %}" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+            integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link
+            rel="icon"
+            href="\static\—Pngtree—money symbol_6068402.png"
+            type="image/x-icon"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            .container2 {
+                max-width: 960px;
+                margin: auto;
+            }
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            .content2 h1 {
+                animation: fadeInUp 1s ease-in-out;
+            }
+            .content2 p {
+                animation: fadeInUp 1s ease-in-out;
+            }
+
+            .news {
+                padding: 90px 0;
+                background-color: #f2f2f2;
+            }
+
+            .news-title {
+                margin-bottom: 70px;
+                text-align: center;
+            }
+
+            .title-1 {
+                font-size: 34px;
+                font-weight: 600;
+            }
+
+            .project {
+                text-align: center;
+            }
+
+            .project + .project {
+                margin-top: 90px;
+            }
+
+            .project-img {
+                margin-bottom: 40px;
+                max-width: 55%;
+                max-height: 55vh;
+                object-fit: contain;
+            }
+
+            .project-title {
+                font-size: 15px;
+            }
+
+            .project-title a {
+                color: black;
+                text-decoration: underline;
+            }
+
+            .articles-container {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .article-card {
+                width: 300px;
+                margin: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .article-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .article-card img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+
+            .article-info {
+                padding: 15px;
+            }
+
+            .article-info h3 {
+                font-size: 1.2em;
+                margin-bottom: 10px;
+            }
+
+            .article-info p {
+                font-size: 0.9em;
+                line-height: 1.4;
+            }
+
+            .read-more {
+                display: inline-block;
+                padding: 5px 10px;
+                background-color: #007bff;
+                color: white;
+                text-decoration: none;
+                border-radius: 3px;
+                transition: background-color 0.3s ease-in-out;
+            }
+
+            .read-more:hover {
+                background-color: #0056b3;
+            }
+
+            .container {
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2em;
+                margin-bottom: 20px;
+            }
+
+            .counter-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 3em;
+                margin-bottom: 20px;
+            }
+
+            .counter {
+                margin-left: 10px;
+                color: #ffcc00;
+            }
+
+            .fake-visits {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 20px;
+            }
+
+            .fake-visit {
+                width: 10px;
+                height: 10px;
+                background-color: #ffcc00;
+                border-radius: 50%;
+                margin: 0 5px;
+                opacity: 0;
+                animation: fakeVisit 2s infinite;
+            }
+
+            @keyframes fakeVisit {
+                0% {
+                    opacity: 0;
+                    transform: translateY(0);
+                }
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-30px);
+                }
+            }
+            .snowflakes {
+                position: fixed;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                z-index: 9999;
+            }
+
+            .snowflake {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                background-color: #fff;
+                border-radius: 50%;
+                animation: snowfall linear infinite;
+            }
+
+            @keyframes snowfall {
+                0% {
+                    transform: translateY(-50%);
+                }
+                100% {
+                    transform: translateY(100vh);
+                }
+            }
+
+            .window-container {
+                height: 100hv;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .window {
+                width: 300px;
+                height: 200px;
+                border: 1px solid #000;
+                margin: 20px;
+                overflow: hidden;
+                position: relative;
+            }
+
+            .window img {
+                width: 100%;
+                height: 100%;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .text-overlay {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: #fff;
+                background: rgba(0, 0, 0, 0.7);
+                padding: 10px;
+                border-radius: 5px;
+                font-size: 16px;
+                opacity: 0; /* Начальная прозрачность */
+                transition: opacity 0.3s ease-in-out; /* Анимация появления текста */
+            }
+
+            .window:hover .text-overlay {
+                opacity: 1; /* Показать текст при наведении */
+            }
+
+/* Стили для контейнера с отзывами */
+.container4 {
+    margin: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Стили для формы отзывов */
+.review-form {
+    width: 45%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.review-form h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.review-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-form label {
+    display: none;
+}
+
+.review-form input[type="text"],
+.review-form input[type="number"],
+.review-form textarea {
+    width: calc(100% - 10px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.review-form input[type="text"]:focus,
+.review-form input[type="number"]:focus,
+.review-form textarea:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.review-form button {
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.review-form button:hover {
+    background-color: #003f87;
+}
+
+/* Стили для списка отзывов */
+.reviews-list {
+    width: 45%;
+}
+
+.reviews-list h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.review {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.review p {
+    margin: 10px 0;
+    color: #555;
+}
+
+.review p:first-child {
+    font-weight: bold;
+}
+
+        </style>
+    </head>
+    <body>
+        <div class="snowflakes" aria-hidden="true">
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <!-- Добавьте больше div'ов с классом "snowflake" для большего количества снежинок -->
+        </div>
+        <header>
+            <nav>
+                <img src="{% static 'logo.jpg' %}" alt="logo" class="logo" />
+                <ul>
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/expense-list">Список расходов</a></li>
+                    <li>
+                        <a href="/financial-planning"
+                            >Финансовое планирование</a
+                        >
+                    </li>
+                    <li>
+                        <a href="/reports-and-analytics">Отчеты и аналитика</a>
+                    </li>
+                    <li>
+                        <a href="/finance_resources">Финансовая грамотность</a>
+                    </li>
+                    <li>
+                        <a href="/capital">накопления</a>
+                    </li>
+                    <li>
+                        <a href="/tax_calculator">
+                            Инструмент для расчета налогов</a
+                        >
+                    </li>
+                    <li><a href="/support">Поддержка и обратная связь</a></li>
+                    <ul class="sidebar-nav">
+                        {% if user.is_authenticated %}
+                        <li>User: {{ user.get_username }}</li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                        {% else %}
+                        <li><a id="user" href="/register">Регистрация</a></li>
+                        |
+                        <li>
+                            <a
+                                id="user"
+                                href="{% url 'login'%}?next={{request.path}}"
+                                >Войти</a
+                            >
+                        </li>
+                        {% endif %}
+                    </ul>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <div class="content2" data-aos="fade-up">
+                <h1>Сервис финансовой аналитики <br />для бизнеса</h1>
+                <br />
+                <p>
+                    Считайте деньги компании, держите под рукой все ключевые
+                    показатели и принимайте решения на основе цифр.
+                </p>
+                <div class="button-container"></div>
+            </div>
+        </main>
+        <br />
+        <div class="counter-wrapper">
+            <p>Количество посещений:</p>
+            <div id="counter" class="counter">{{ visit_count }}</div>
+        </div>
+
+        <h2 style="text-align: center" data-aos="fade-up">Наши ценности</h2>
+        <div class="window-container">
+            <div class="window">
+                <img src="{% static 'sfsdfs.jpg' %}" alt="Image 1" />
+                <div class="text-overlay">Инновации и обновления</div>
+            </div>
+
+            <div class="window">
+                <img src="{% static 'fsdf.jpg' %}" alt="Image 2" />
+                <div class="text-overlay">
+                    Безопасность и конфиденциальность
+                </div>
+            </div>
+            <div class="window">
+                <img src="{% static 'ewew.jpg' %}" alt="Image 3" />
+                <div class="text-overlay">
+                    Удобство использования и доступность
+                </div>
+            </div>
+        </div>
+
+        {% block content %}
+        <h2 style="text-align: center" data-aos="fade-up">
+            Последние статьи и советы
+        </h2>
+        <br />
+        <div class="articles-container" data-aos="fade-up">
+            <div class="article-card">
+                <img src="{% static 'news1.jpg' %}" alt="Изображение статьи" />
+                <div class="article-info">
+                    <h3>
+                        5 ключевых метрик финансового здоровья вашего бизнеса
+                    </h3>
+                    <p>
+                        Какие финансовые показатели необходимо отслеживать для
+                        оценки здоровья и успеха вашего бизнеса?
+                    </p>
+                    <a href="news1.html" class="read-more">Читать далее</a>
+                </div>
+            </div>
+            <div class="article-card">
+                <img src="{% static 'news2.jpg' %}" alt="Изображение статьи" />
+                <div class="article-info">
+                    <h3>
+                        Инновационные методы финансового анализа для малого
+                        бизнеса
+                    </h3>
+                    <p>
+                        Малому бизнесу часто требуются специальные подходы к
+                        финансовому анализу.
+                    </p>
+                    <a href="news2.html" class="read-more">Читать далее</a>
+                </div>
+            </div>
+            <div class="article-card">
+                <img src="{% static 'news3.jpg' %}" alt="Изображение статьи" />
+                <div class="article-info">
+                    <h3>
+                        Будущее финансового анализа: роль искусственного
+                        интеллекта и аналитики данных
+                    </h3>
+                    <p>
+                        Как технологические инновации меняют финансовый анализ?
+                    </p>
+                    <a href="news3.html" class="read-more">Читать далее</a>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="article-card">
+                <img
+                    src="{% static 'Investtsii.jpg' %}"
+                    alt="Изображение статьи"
+                />
+                <div class="article-info">
+                    <h3>
+                        Эффективное использование финансового анализа для
+                        привлечения инвестиций
+                    </h3>
+                    <p>
+                        Какие финансовые показатели и отчеты являются ключевыми
+                        для привлечения внешних инвесторов?
+                    </p>
+                    <a href="news4.html" class="read-more">Читать далее</a>
+                </div>
+            </div>
+            <div class="article-card">
+                <img src="{% static 'st.jpg' %}" alt="Изображение статьи" />
+                <div class="article-info">
+                    <h3>
+                        Финансовый анализ для оценки стоимости бизнеса перед
+                        продажей
+                    </h3>
+                    <p>
+                        Как использовать финансовый анализ для определения
+                        реальной стоимости вашего бизнеса перед его продажей?
+                    </p>
+                    <a href="news5.html" class="read-more">Читать далее</a>
+                </div>
+            </div>
+            <div class="article-card">
+                <img src="{% static 'ldd.jpg' %}" alt="Изображение статьи" />
+                <div class="article-info">
+                    <h3>
+                        Использование финансовых показателей для улучшения
+                        стратегического планирования
+                    </h3>
+                    <p>
+                        Какие финансовые данные и метрики помогают в разработке
+                        эффективных стратегий развития бизнеса?
+                    </p>
+                    <a href="news6.html" class="read-more">Читать далее</a>
+                </div>
+            </div>
+            <div class="article-card">
+                <img src="{% static 'mmd.jpg' %}" alt="Изображение статьи" />
+                <div class="article-info">
+                    <h3>
+                        Основы финансового моделирования для прогнозирования
+                        доходов и затрат
+                    </h3>
+                    <p>
+                        Как построить финансовую модель, которая поможет
+                        прогнозировать доходы и затраты на основе текущих
+                        данных?
+                    </p>
+                    <a href="news7.html" class="read-more">Читать далее</a>
+                </div>
+            </div>
+            <div class="article-card">
+                <img src="{% static 'gmm.jpg' %}" alt="Изображение статьи" />
+                <div class="article-info">
+                    <h3>
+                        Финансовый анализ для управления операционными
+                        издержками
+                    </h3>
+                    <p>
+                        Как финансовый анализ помогает управлять операционными
+                        издержками и оптимизировать бизнес-процессы?
+                    </p>
+                    <a href="news8.html" class="read-more">Читать далее</a>
+                </div>
+            </div>
+            <div class="article-card">
+                <img src="{% static 'hmm.jpg' %}" alt="Изображение статьи" />
+                <div class="article-info">
+                    <h3>
+                        Использование финансовых показателей для оценки
+                        рентабельности инвестиций в маркетинг
+                    </h3>
+                    <p>
+                        Как оценить эффективность инвестиций в маркетинг с
+                        помощью финансового анализа?
+                    </p>
+                    <a href="news9.html" class="read-more">Читать далее</a>
+                </div>
+            </div>
+            <div class="article-card">
+                <img src="{% static 'ssd.jpg' %}" alt="Изображение статьи" />
+                <div class="article-info">
+                    <h3>
+                        Финансовый анализ в условиях неопределенности:
+                        управление финансовыми рисками
+                    </h3>
+                    <p>
+                        Как использовать финансовый анализ для оценки и
+                        управления рисками в периоды неопределенности?
+                    </p>
+                    <a href="news10.html" class="read-more">Читать далее</a>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+
+        <div class="container4" data-aos="fade-up">
+            <div class="review-form">
+                <h2>Оставить отзыв:</h2>
+                <form method="post">
+                    {% csrf_token %}
+
+                    {{ form.as_ul }}
+        
+                    <button type="submit">Отправить</button>
+                </form>
+            </div>
+        
+            <div class="reviews-list">
+                <h2>Отзывы:</h2>
+                <ul id="reviewsList">
+                    {% for review in reviews %}
+                        <div class="review">
+                            <p>User: {{ review.user.username }}</p>
+                            <p>{{ review.rating }} / 5</p>
+                            <p>{{ review.comment }}</p>
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <footer class="footer" data-aos="fade-up">
+            <div class="container2">
+                <div class="row">
+                    <div class="footer-col">
+                        <h4>Контакты</h4>
+                        <ul>
+                            <li>
+                                <a href="#">Почта:boris.nicolaec@mail.ru</a>
+                            </li>
+                            <li><a href="#">Телефон: +770285123</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="col-md-6">
+                    <p>&copy; 2023 Ваш Сайт. Все права защищены.</p>
+                </div>
+            </div>
+        </footer>
+        <script src="{% static 'script.js' %}"></script>
+        <script src="main.js"></script>
+        <script src="user.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"
+            integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script>
+            AOS.init();
+            
+            function createSnowflakes() {
+                const snowflakeCount = 50; // Количество снежинок
+
+                for (let i = 0; i < snowflakeCount; i++) {
+                    const snowflake = document.createElement("div");
+                    snowflake.className = "snowflake";
+                    snowflake.style.left =
+                        Math.random() * window.innerWidth + "px";
+                    snowflake.style.animationDuration =
+                        Math.random() * 5 + 3 + "s";
+                    snowflake.style.animationDelay = -(Math.random() * 8) + "s";
+                    document
+                        .querySelector(".snowflakes")
+                        .appendChild(snowflake);
+                }
+            }
+
+            createSnowflakes();
+        </script>
+
+        <script>
+            let reviews = [];
+
+            // Функция для отображения отзывов
+            function displayReviews() {
+                const reviewsList = document.getElementById("reviewsList");
+                reviewsList.innerHTML = "";
+
+                reviews.forEach((review) => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `<strong>${review.username}</strong> оценил на ${review.rating}/5: "${review.comment}"`;
+                    reviewsList.appendChild(li);
+                });
+            }
+
+            // Функция для добавления нового отзыва
+            function addReview(event) {
+                event.preventDefault();
+
+                const username = document.getElementById("username").value;
+                const rating = parseInt(
+                    document.getElementById("rating").value
+                );
+                const comment = document.getElementById("comment").value;
+
+                reviews.push({ username, rating, comment });
+                displayReviews();
+                document.getElementById("reviewForm").reset();
+            }
+
+            // Слушатель события для отправки отзыва
+            document
+                .getElementById("reviewForm")
+                .addEventListener("submit", addReview);
+
+            // Инициализация при загрузке страницы
+            window.onload = displayReviews;
+        </script>
+    </body>
+</html>

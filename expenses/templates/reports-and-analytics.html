@@ -1,0 +1,244 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>WalletWISE</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+        integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="\static\—Pngtree—money symbol_6068402.png" type="image/x-icon">
+    <style>
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .expense-table,
+        .goals-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .expense-table th,
+        .expense-table td,
+        .goals-table th,
+        .goals-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .expense-table th,
+        .goals-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #333;
+        }
+
+        .expense-table tbody tr:nth-child(even),
+        .goals-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .expense-table tbody tr:hover,
+        .goals-table tbody tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        .table-separator {
+            margin-top: 40px;
+            border-top: 2px solid #ddd;
+        }
+
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .snowflake {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-50%);
+            }
+
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<body>
+    <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <!-- Добавьте больше div'ов с классом "snowflake" для большего количества снежинок -->
+    </div>
+    <header>
+        <nav>
+            <img src="{% static 'logo.jpg' %}" alt="logo" class="logo" />
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="/expense-list">Список расходов</a></li>
+                <li>
+                    <a href="/financial-planning"
+                        >Финансовое планирование</a
+                    >
+                </li>
+                <li>
+                    <a href="/reports-and-analytics">Отчеты и аналитика</a>
+                </li>
+                <li>
+                    <a href="/finance_resources">Финансовая грамотность</a>
+                </li>
+                <li>
+                    <a href="/capital">накопления</a>
+                </li>
+                <li>
+                    <a href="/tax_calculator">
+                        Инструмент для расчета налогов</a
+                    >
+                </li>
+                <li><a href="/support">Поддержка и обратная связь</a></li>
+                <ul class="sidebar-nav">
+                    {% if user.is_authenticated %}
+                    <li>User: {{ user.get_username }}</li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                    <li><a id="user" href="/register">Регистрация</a></li>
+                    |
+                    <li>
+                        <a
+                            id="user"
+                            href="{% url 'login'%}?next={{request.path}}"
+                            >Войти</a
+                        >
+                    </li>
+                    {% endif %}
+                </ul>
+            </ul>
+        </nav>
+    </header>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"
+        integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        AOS.init();
+    </script>
+    <br>
+    {% block content %}
+    <div class="container" data-aos="fade-up">
+        <div class="table-container">
+            <h2 style="text-align: center;">Таблица расходов</h2>
+
+            <table class="expense-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Сумма</th>
+                        <th>Дата</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.name }}</td>
+                        <td>{{ expense.amount }}</td>
+                        <td>{{ expense.date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+            <div class="table-separator"></div>
+
+            <h2 style="text-align: center; margin-top: 40px;">Таблица финансовых целей</h2>
+            <table class="goals-table">
+                <thead>
+                    <tr>
+                        <th>Цель</th>
+                        <th>Сумма</th>
+                        <th>Дата</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for finance in finances %}
+                    <tr>
+                        <td>{{ finance.name }}</td>
+                        <td>{{ finance.amount }}</td>
+                        <td>{{ finance.date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endblock %}
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Ищем куку с заданным именем
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+    </script>
+      <script>
+        function createSnowflakes() {
+          const snowflakeCount = 50; // Количество снежинок
+    
+          for (let i = 0; i < snowflakeCount; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.style.left = Math.random() * window.innerWidth + 'px';
+            snowflake.style.animationDuration = (Math.random() * 5 + 3) + 's';
+            snowflake.style.animationDelay = -(Math.random() * 8) + 's';
+            document.querySelector('.snowflakes').appendChild(snowflake);
+          }
+        }
+    
+        createSnowflakes();
+      </script>
+</body>
+
+</html>

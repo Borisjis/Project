@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Финансовая аналитика в бизнесе</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/static/money_symbol_6068402.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Основной стиль */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .snowflake {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-50%);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Стили для статьи */
+        .article {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .article h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .article img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .article p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="snowflakes" aria-hidden="true">
+        <!-- Добавьте больше div'ов с классом "snowflake" для большего количества снежинок -->
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+    </div>
+
+    <article class="article" data-aos="fade-up" data-aos-duration="3000">
+        <h2>Советы по эффективному инвестированию</h2>
+        <img src="{% static 'invest1.jpg' %}" alt="Изображение статьи">
+        <p>
+            Выбирайте финансовые аналитические платформы, соответствующие потребностям вашего бизнеса. Они помогут принимать обоснованные решения на основе данных. Обучите сотрудников пользоваться выбранным сервисом для более эффективного использования его возможностей. Используйте аналитику для прогнозирования рыночных тенденций и принятия обоснованных инвестиционных решений. Регулярно отслеживайте результаты и корректируйте стратегии на основе полученных данных для оптимизации инвестиций и достижения финансовых целей.
+        </p>
+        <a href="#" class="back-button">Назад</a>
+    </article>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const backButton = document.querySelector('.back-button');
+            backButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                window.location.href = 'http://127.0.0.1:8000/finance_resources/'; // Поменяйте на путь вашей главной страницы
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script>
+        function createSnowflakes() {
+            const snowflakeCount = 50; // Количество снежинок
+
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.style.left = Math.random() * window.innerWidth + 'px';
+                snowflake.style.animationDuration = (Math.random() * 5 + 3) + 's';
+                snowflake.style.animationDelay = -(Math.random() * 8) + 's';
+                document.querySelector('.snowflakes').appendChild(snowflake);
+            }
+        }
+
+        createSnowflakes();
+    </script>
+</body>
+</html>

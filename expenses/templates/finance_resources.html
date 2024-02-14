@@ -1,0 +1,239 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WalletWISE</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+        integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="\static\—Pngtree—money symbol_6068402.png" type="image/x-icon" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Global styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Snowflakes animation */
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .snowflake {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-50%);
+            }
+
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Container styles */
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Tabs styles */
+        .tabs {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+        }
+
+        .tab {
+            flex: 1;
+            margin: 0 10px 20px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .tab:hover {
+            background-color: #f9f9f9;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Content styles */
+        .content {
+            position: relative;
+        }
+
+        .content img {
+            width: 100%; /* Automatic width for images */
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.5s ease;
+        }
+
+        .content p {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            margin: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+
+        .tab:hover .content img {
+            transform: scale(1.1); /* Image enlargement on hover */
+        }
+
+        .tab:hover .content p {
+            transform: translateY(0); /* Display text on hover */
+        }
+
+        /* Link styles */
+        a {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Snowflakes -->
+    <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <!-- Add more divs with the "snowflake" class for additional snowflakes -->
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <img src="{% static 'logo.jpg' %}" alt="logo" class="logo" />
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="/expense-list">Список расходов</a></li>
+                <li><a href="/financial-planning">Финансовое планирование</a></li>
+                <li><a href="/reports-and-analytics">Отчеты и аналитика</a></li>
+                <li><a href="/finance_resources">Финансовая грамотность</a></li>
+                <li><a href="/capital">Накопления</a></li>
+                <li><a href="/tax_calculator">Инструмент для расчета налогов</a></li>
+                <li><a href="/support">Поддержка и обратная связь</a></li>
+                <ul class="sidebar-nav">
+                    {% if user.is_authenticated %}
+                    <li>User: {{ user.get_username }}</li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                    <li><a id="user" href="/register">Регистрация</a></li>
+                    |
+                    <li>
+                        <a id="user" href="{% url 'login'%}?next={{request.path}}">Войти</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </ul>
+        </nav>
+    </header>
+
+    <br>
+
+    <!-- Main Content -->
+    <div class="container" data-aos="fade-up">
+        <h1>Раздел обучения финансовой грамотности</h1>
+
+        <div class="tabs">
+            <div class="tab" id="tab1">
+                <h2>Советы по экономии денег</h2>
+                <div class="content">
+                    <img src="{% static 'OIP.jpg' %}" alt="Изображение по экономии">
+                </div>
+                <a href="economy_tips.html">Подробнее</a>
+            </div>
+            <div class="tab" id="tab2">
+                <h2>Советы по эффективному инвестированию</h2>
+                <div class="content">
+                    <img src="{% static 'invest1.jpg' %}" alt="Изображение по инвестированию">
+                </div>
+                <a href="investment_tips.html">Подробнее</a>
+            </div>
+            <div class="tab" id="tab3">
+                <h2>Финансовые термины и словарь</h2>
+                <div class="content">
+                    <img src="{% static 'finance.jpg' %}" alt="Изображение по инвестированию">
+                </div>
+                <a href="investment2_tips.html">Подробнее</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const href = tab.querySelector('a').getAttribute('href');
+                window.location.href = href;
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"
+        integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script>
+        function createSnowflakes() {
+            const snowflakeCount = 50; // Number of snowflakes
+
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.style.left = Math.random() * window.innerWidth + 'px';
+                snowflake.style.animationDuration = (Math.random() * 5 + 3) + 's';
+                snowflake.style.animationDelay = -(Math.random() * 8) + 's';
+                document.querySelector('.snowflakes').appendChild(snowflake);
+            }
+        }
+
+        createSnowflakes();
+    </script>
+</body>
+
+</html>

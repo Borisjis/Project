@@ -1,0 +1,258 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <!-- ... rest of your HTML ... -->
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>WalletWISE</title>
+        <link rel="stylesheet" href="{% static 'styles.css' %}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+            integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link
+            rel="icon"
+            href="\static\—Pngtree—money symbol_6068402.png"
+            type="image/x-icon"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+ .container {
+      display: flex;
+      align-items: center;
+      max-width: 800px;
+      width: 100%;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    .calculator {
+      flex: 1;
+      padding-right: 20px;
+    }
+
+    .chart-container {
+      flex: 1;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="number"] {
+      width: calc(100% - 12px);
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    canvas {
+      max-width: 100%;
+      margin-top: 20px;
+    }
+    .snowflakes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+      }
+
+      .snowflake {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #fff;
+        border-radius: 50%;
+        animation: snowfall linear infinite;
+      }
+
+      @keyframes snowfall {
+        0% {
+          transform: translateY(-50%);
+        }
+        100% {
+          transform: translateY(100vh);
+        }
+      }
+</style>
+
+        <body>
+            <div class="snowflakes" aria-hidden="true">
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <div class="snowflake"></div>
+                <!-- Добавьте больше div'ов с классом "snowflake" для большего количества снежинок -->
+            </div>
+            <header>
+                <nav>
+                    <img src="{% static 'logo.jpg' %}" alt="logo" class="logo" />
+                    <ul>
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="/expense-list">Список расходов</a></li>
+                        <li>
+                            <a href="/financial-planning"
+                                >Финансовое планирование</a
+                            >
+                        </li>
+                        <li>
+                            <a href="/reports-and-analytics">Отчеты и аналитика</a>
+                        </li>
+                        <li>
+                            <a href="/finance_resources">Финансовая грамотность</a>
+                        </li>
+                        <li>
+                            <a href="/capital">накопления</a>
+                        </li>
+                        <li>
+                            <a href="/tax_calculator">
+                                Инструмент для расчета налогов</a
+                            >
+                        </li>
+                        <li><a href="/support">Поддержка и обратная связь</a></li>
+                        <ul class="sidebar-nav">
+                            {% if user.is_authenticated %}
+                            <li>User: {{ user.get_username }}</li>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                            {% else %}
+                            <li><a id="user" href="/register">Регистрация</a></li>
+                            |
+                            <li>
+                                <a
+                                    id="user"
+                                    href="{% url 'login'%}?next={{request.path}}"
+                                    >Войти</a
+                                >
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </ul>
+                </nav>
+            </header>
+
+            <div class="container" data-aos="fade-up">
+                <div class="calculator">
+                  <h1>Калькулятор накоплений</h1>
+                  <label for="goal">Цель накоплений:</label>
+                  <input type="number" id="goal" placeholder="Введите цель">
+                  
+                  <label for="income">Ваш доход в день:</label>
+                  <input type="number" id="income" placeholder="Введите доход">
+                  
+                  <button onclick="calculateSavings()">Рассчитать</button>
+                  
+                  <p id="result"></p>
+                </div>
+            
+                <div class="chart-container">
+                  <canvas id="myChart" width="200" height="150"></canvas>
+                </div>
+              </div>
+            
+              <script>
+                function calculateSavings() {
+                  const goal = parseFloat(document.getElementById('goal').value);
+                  const income = parseFloat(document.getElementById('income').value);
+                  const resultElement = document.getElementById('result');
+            
+                  if (isNaN(goal) || isNaN(income) || income <= 0 || goal <= 0) {
+                    resultElement.innerText = "Пожалуйста, введите корректные данные.";
+                    return;
+                  }
+            
+                  const savingsPerDay = goal / income;
+                  resultElement.innerText = `Вам нужно откладывать ${savingsPerDay.toFixed(2)} в день для достижения вашей цели.`;
+            
+                  const ctx = document.getElementById('myChart').getContext('2d');
+                  const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                      labels: ['Накопления в день'],
+                      datasets: [{
+                        label: 'Сумма',
+                        data: [savingsPerDay],
+                        backgroundColor: 'rgba(54, 162, 235, 0.8)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                      }]
+                    },
+                    options: {
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      scales: {
+                        y: {
+                          beginAtZero: true,
+                          title: {
+                            display: true,
+                            text: 'Сумма'
+                          }
+                        },
+                        x: {
+                          title: {
+                            display: false,
+                            text: 'Дни'
+                          }
+                        }
+                      },
+                      plugins: {
+                        legend: {
+                          display: false
+                        }
+                      }
+                    }
+                  });
+                }
+              </script>
+             <script>
+                function createSnowflakes() {
+                  const snowflakeCount = 50; // Количество снежинок
+            
+                  for (let i = 0; i < snowflakeCount; i++) {
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    snowflake.style.left = Math.random() * window.innerWidth + 'px';
+                    snowflake.style.animationDuration = (Math.random() * 5 + 3) + 's';
+                    snowflake.style.animationDelay = -(Math.random() * 8) + 's';
+                    document.querySelector('.snowflakes').appendChild(snowflake);
+                  }
+                }
+            
+                createSnowflakes();
+              </script>  
+               <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+               <script>
+               AOS.init();
+           
+               </script>
+</body>
+</html>

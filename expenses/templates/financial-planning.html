@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WalletWISE</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="\static\—Pngtree—money symbol_6068402.png" type="image/x-icon">
+<style>
+    .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+         }
+
+         .snowflake {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: snowfall linear infinite;
+         }
+
+         @keyframes snowfall {
+            0% {
+                transform: translateY(-50%);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+         }
+</style>
+</head>
+<body>
+    <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <!-- Добавьте больше div'ов с классом "snowflake" для большего количества снежинок -->
+      </div>
+      <header>
+        <nav>
+            <img src="{% static 'logo.jpg' %}" alt="logo" class="logo" />
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="/expense-list">Список расходов</a></li>
+                <li>
+                    <a href="/financial-planning"
+                        >Финансовое планирование</a
+                    >
+                </li>
+                <li>
+                    <a href="/reports-and-analytics">Отчеты и аналитика</a>
+                </li>
+                <li>
+                    <a href="/finance_resources">Финансовая грамотность</a>
+                </li>
+                <li>
+                    <a href="/capital">накопления</a>
+                </li>
+                <li>
+                    <a href="/tax_calculator">
+                        Инструмент для расчета налогов</a
+                    >
+                </li>
+                <li><a href="/support">Поддержка и обратная связь</a></li>
+                <ul class="sidebar-nav">
+                    {% if user.is_authenticated %}
+                    <li>User: {{ user.get_username }}</li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                    <li><a id="user" href="/register">Регистрация</a></li>
+                    |
+                    <li>
+                        <a
+                            id="user"
+                            href="{% url 'login'%}?next={{request.path}}"
+                            >Войти</a
+                        >
+                    </li>
+                    {% endif %}
+                </ul>
+            </ul>
+        </nav>
+    </header>
+    <br>
+    <br>
+    <br>
+    <div class="container" data-aos="fade-up">
+        <h1>Финансовые цели и прогресс</h1>
+        <form id="financial-planning" method="post">
+            {% csrf_token %}
+            <label for="finance_name">Название цели:</label>
+            <input type="text" name="finance_name" id="finance_name" required><br>
+            <label for="target_amount">Целевая сумма:</label>
+            <input type="number" name="target_amount" id="target_amount" required><br>
+            <label for="deadline">Срок:</label>
+            <input type="date" name="deadline" id="deadline" required><br>
+            <input type="submit" value="Установить цель">
+        </form>
+
+        
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+        AOS.init();
+
+        </script>
+                <script>
+                    function createSnowflakes() {
+          const snowflakeCount = 50; // Количество снежинок
+        
+          for (let i = 0; i < snowflakeCount; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.style.left = Math.random() * window.innerWidth + 'px';
+            snowflake.style.animationDuration = (Math.random() * 5 + 3) + 's';
+            snowflake.style.animationDelay = -(Math.random() * 8) + 's';
+            document.querySelector('.snowflakes').appendChild(snowflake);
+          }
+        }
+        
+        createSnowflakes();
+                </script>
+</body>
+</html>
